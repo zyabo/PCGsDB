@@ -22,7 +22,7 @@ torch.cuda.empty_cache()
 device = "cuda"
 
 client_gpt = OpenAI(
-    api_key="sk-proj-XrnkiXS7BrOUoBHNwgmtT3BlbkFJ7RaJA26AQuE9pTPmP5aP",
+    api_key="sk-proj-***************************************",
 )
 
 
