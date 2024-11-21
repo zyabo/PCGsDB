@@ -12,7 +12,7 @@ You can mine a dataset from scratch or download a mined dataset directly for vie
 
 
 
-## 1.Building PCGs DB from scratch
+## 1. Building PCGs DB from scratch
 
 #### 1.1 Install dependencies
 
@@ -181,18 +181,19 @@ python scripts/S4_3_Score_Level.py
 ##### 1.3.4 Literature-based Validation
 
 ```
-python S5_1_Val_Web.py
-python S5_2_Val_Text.py
-python S5_3_Val.py
+python scripts/S5_1_Val_Web.py
+python scripts/S5_2_Val_Text.py
+python scripts/S5_3_Val.py
 ```
 
 
 
 ## 2.Download and view the dataset
 
-Ensure that the `dataset` folder contains the appropriate data before starting training. 
+In the `PCGsDB`  folder, there are two files of the PCGs DB database: 
 
+1.  `PCGsDB.sql` : sql file exported from mysql
+2.  `PCGsDB.csv`: a csv file for easy reading
 
-
-
+Due to github storage space limitations, other dependent databases (such as PMC-Patients) are not uploaded, please download them yourself
 

@@ -51,25 +51,20 @@ def search_query(Query_str, browser):
     more_page_n = 0
     for t1 in range(0, more_page_n):
         try:
-            # 使用显式等待确保按钮可点击
             wait = WebDriverWait(browser, 3)
             more_results_button = wait.until(EC.element_to_be_clickable((By.ID, "more-results")))
 
-            # 点击按钮加载更多结果
             more_results_button.click()
 
-            # 可以选择再次等待一段时间，确保新内容加载完成
             time.sleep(1)
         except:
             try:
-                # 向下滚动页面
                 browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                # 可以选择等待几秒钟，让页面加载
                 time.sleep(1)
             except:
                 pass
 
-    # 获取页面的HTML内容
+    # Get the HTML content of the page
     html_data = browser.page_source
 
     # Create a BeautifulSoup object
@@ -161,19 +156,19 @@ def S5_1_Val_Web(dir_paths):
                                 time.sleep(1)
                                 pass
 
-                        # 检查当前URL是否以.pdf结尾
+                        # Check if the current URL ends with .pdf
                         if browser.current_url.endswith('.pdf'):
 
                             text_data = ""
                             try:
-                                # 下载PDF文件
+                                # Download PDF file
                                 response = requests.get(browser.current_url, stream=True)
                                 if response.status_code == 200:
                                     with open('temp.pdf', 'wb') as f:
                                         response.raw.decode_content = True
                                         shutil.copyfileobj(response.raw, f)
 
-                                    # 读取PDF内容
+                                    # Read PDF content
                                     with pdfplumber.open('temp.pdf') as pdf:
                                         for page in pdf.pages:
                                             # print(page.extract_text())
@@ -210,7 +205,11 @@ def S5_1_Val_Web(dir_paths):
     browser.quit()
 
 if __name__ == "__main__":
-    Dict_Gene_Level_pth = r'D:\\Codes\\GeneExplorer\\results\\data_files\\Dict_Gene_Level.json'
+    from get_dir_paths import get_dir_paths
+
+    current_dir_path = os.path.dirname(os.getcwd())
+    dir_paths = get_dir_paths(current_dir_path)
+
     S5_1_Val_Web(dir_paths)
 
 

@@ -49,3 +49,9 @@ def S1_2_Filter_Index_TissueRecord_Full(dir_paths):
     with open(dir_paths["Dict_Index_TissueRecord_Full.json"] , 'w') as f:
         json.dump(Dict_TissueCancerNames_Full, f, indent=4)
 
+if __name__ == "__main__":
+    from get_dir_paths import get_dir_paths
+
+    current_dir_path = os.path.dirname(os.getcwd())
+    dir_paths = get_dir_paths(current_dir_path)
+    S1_2_Filter_Index_TissueRecord_Full(dir_paths)

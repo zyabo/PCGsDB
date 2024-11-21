@@ -33,36 +33,21 @@ torch.cuda.empty_cache()
 # device = "cuda" if torch.cuda.is_available() else "cpu"
 device = "cuda"
 
-def get_prompt_text(val_web_text, tissue, gene_name):
-    prompt_str = """
-This is a text understanding task.
-Based on the text below, please determine whether this text indicates that {} cancer is related to gene {} mutation.
-The text is as follows:
-{}
 
-Question: Does this text indicate that {} cancer is related to gene {} mutation?
-Option A: Yes
-Option B: No
-Option C: Not enough information
-Selected option:
-""".format(tissue, gene_name, val_web_text,tissue, gene_name)
-    return prompt_str
-
-def S5_3_Val(dir_paths):
+def S5_4_Score(dir_paths):
     # Dict_Gene_Val_pth = r'D:\\Codes\\GeneExplorer\\results\\data_files\\Dict_Gene_Val.json'
     Dict_Gene_Val_pth = dir_paths["Dict_Gene_Val.json"]
 
     with open(Dict_Gene_Val_pth, 'r') as file:
         Dict_Gene_Val = json.load(file)
 
-    # model_type = "local"
-    # model_name = "Llama-3.1-8B-Instruct"
-
-    model_type = "api"
-    model_name = "llama3.1:8b"
+    model_type = "local"
+    model_name = "numind/NuExtract-1.5"
 
     client, pipeline, tokenizer = init_llm(model_type, model_name)
-
+    template = """{
+        "Selected Options": ""
+    }"""
     """
 
     """
@@ -90,18 +75,24 @@ def S5_3_Val(dir_paths):
                 val_web_texts = val_webs[g1]["texts"]
                 val_web_types = val_webs[g1]["types"]
                 val_web_texts_clean = val_webs[g1]["clean texts"]
-                val_llm = [""]*len(val_web_urls)
+                val_llms = val_webs[g1]["val llm"]
+                val_scores = [""]*len(val_web_urls)
 
                 print("→ " + " " * 4 + "GeneName:{}: GeneNum:{} GeneLevel:{}".format(gene_name,gene_num,gene_level) + "     " + "=" * 5)
 
-                for u1, val_web_text_clean in enumerate(val_web_texts_clean):
-                    prompt_str = get_prompt_text(val_web_text_clean, tissue, gene_name)
+                for u1, val_llm in enumerate(val_llms):
+                    if len(val_llm)>1000:
+                        prompt_str = val_llm[:1000]
+                    else:
+                        prompt_str = val_llm
+                    system_content = ""
+                    user_content = ""
                     response_str, total_tokens = get_response(model_type, model_name, client, pipeline, tokenizer,
-                                                              prompt_str)
-                    # print(response_str)
-                    val_llm[u1] = response_str
+                                                              prompt_str,system_content, user_content, template)
+                    print(response_str)
+                    val_scores[u1] = response_str
 
-                val_webs[g1]["val llm"] = val_llm
+                val_webs[g1]["scores"] = val_scores
 
         Dict_Gene_Val[tissue] = {"genes_name": genes_name,
                                  "genes_level": genes_level,
@@ -124,7 +115,7 @@ if __name__ == "__main__":
     from get_dir_paths import get_dir_paths
     current_dir_path = os.path.dirname(os.getcwd())
     dir_paths = get_dir_paths(current_dir_path)
-    S5_3_Val(dir_paths)
+    S5_4_Score(dir_paths)
 
 
 

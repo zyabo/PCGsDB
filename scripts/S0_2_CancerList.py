@@ -57,7 +57,10 @@ def S0_2_CancerList(dir_paths):
         json.dump(Dict_TissueCancerNames, f, indent=4)
     print(CancerNameList_n)
 
-# if __name__ == "__main__":
-#     current_dir_path = os.path.dirname(os.getcwd())
-#     S0_2_CancerList(current_dir_path)
+if __name__ == "__main__":
+    from get_dir_paths import get_dir_paths
+    current_dir_path = os.path.dirname(os.getcwd())
+    dir_paths = get_dir_paths(current_dir_path)
+    current_dir_path = os.path.dirname(os.getcwd())
+    S0_2_CancerList(dir_paths)
 

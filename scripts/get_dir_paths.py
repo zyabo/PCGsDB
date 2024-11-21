@@ -64,5 +64,6 @@ def get_dir_paths(current_dir_path):
     dir_paths["Dict_CandidateGene.json"] = os.path.join(current_dir_path, "results", "data_files",
                                                         "Dict_CandidateGene.json")
     dir_paths["results_dir"] = os.path.join(current_dir_path, "datasets", "results")
+    dir_paths["datasets_dir"] = os.path.join(current_dir_path, "datasets")
 
     return dir_paths

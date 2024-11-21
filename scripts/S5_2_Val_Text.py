@@ -33,13 +33,18 @@ torch.cuda.empty_cache()
 # device = "cuda" if torch.cuda.is_available() else "cpu"
 device = "cuda"
 
-def get_prompt_text(val_web_text):
+def get_prompt_text(val_web_text, tissue, gene_name):
     prompt_str = """
-This is an HTML parsing task. Please parse the following paper's html page into the paper's plain text and output the paper's plain text.
-The html page content is as follows:
-{} 
-Please output the paper's plain text:
-""".format(val_web_text)
+According to the text below, can we conclude from the text above that {} cancer is related to {} gene mutation?：
+Original text:{} 
+
+
+According to the above text, can we conclude from the text above that {} cancer is related to {} gene mutation? Please select an option.
+Option A:"yes"
+Option B:"no"
+Option C:"not enough information"
+Selected option:
+""".format(tissue, gene_name,val_web_text, tissue, gene_name)
     return prompt_str
 
 def S5_2_Val_Text(dir_paths):
@@ -49,10 +54,10 @@ def S5_2_Val_Text(dir_paths):
     with open(Dict_Gene_Val_pth, 'r') as file:
         Dict_Gene_Val = json.load(file)
 
-    model_type = "local"
-    model_name = "Llama-3.1-8B-Instruct"
+    # model_type = "api"
+    # model_name = "llama3.1:8b"
 
-    client, pipeline, tokenizer = init_llm(model_type, model_name)
+    # client, pipeline, tokenizer = init_llm(model_type, model_name)
 
     """
 
@@ -74,8 +79,10 @@ def S5_2_Val_Text(dir_paths):
         val_webs = Dict_Gene_Val_Single["val_webs"]
 
         for g1, gene_level in enumerate(genes_level):
-
             if gene_level == 3:
+                gene_name = genes_name[g1]
+                print("→ " + " " * 10 + "     " + "{}".format(gene_name) + "     " + " " * 10)
+
                 val_web_urls = val_webs[g1]["urls"]
                 val_web_texts = val_webs[g1]["texts"]
                 val_web_types = val_webs[g1]["types"]
@@ -85,11 +92,21 @@ def S5_2_Val_Text(dir_paths):
                     if val_web_type == "html":
                         val_web_text = val_web_texts[u1]
 
-                        # llm 解析
-                        prompt_str = get_prompt_text(val_web_text)
-                        response_str, total_tokens = get_response(model_type, model_name, client, pipeline, tokenizer,
-                                                                  prompt_str)
-                        val_web_texts_clean[u1] = response_str
+                        soup = BeautifulSoup(val_web_text, 'html.parser')
+                        # Extract the desired data from the parsed HTML
+                        # For example, to extract all the text from the page:
+                        text = soup.get_text()
+                        text = text.replace("\n","")
+                        text = text.replace("  ", " ")
+                        val_web_texts_clean[u1] = text
+
+                        # # llm 解析
+                        # prompt_str = get_prompt_text(text,tissue, gene_name)
+                        # response_str, total_tokens = get_response(model_type, model_name, client, pipeline, tokenizer,
+                        #                                           prompt_str)
+                        #
+                        # print(response_str)
+                        # val_web_texts_clean[u1] = response_str
 
                 val_webs[g1]["clean texts"] = val_web_texts_clean
 
@@ -110,10 +127,10 @@ def S5_2_Val_Text(dir_paths):
 
 
 
-# if __name__ == "__main__":
-#     Dict_Gene_Level_pth = r'D:\\Codes\\GeneExplorer\\results\\data_files\\Dict_Gene_Level.json'
-#     S5_1_Val_Web(Dict_Gene_Level_pth)
-
-
+if __name__ == "__main__":
+    from get_dir_paths import get_dir_paths
+    current_dir_path = os.path.dirname(os.getcwd())
+    dir_paths = get_dir_paths(current_dir_path)
+    S5_2_Val_Text(dir_paths)
 
 

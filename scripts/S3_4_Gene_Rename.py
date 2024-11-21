@@ -24,8 +24,15 @@ import json
 import requests
 from bs4 import BeautifulSoup
 import re
-from scripts.scp_disgenet import fetch_gene_name, list_tables_and_columns, check_if_gene_exists, get_diseases_for_gene, \
-    Diseases_associated_gene, query_gene_disease_association, fetch_disease_nids, get_diseases_associated_with_gene
+
+try:
+    from scripts.scp_disgenet import fetch_gene_name, list_tables_and_columns, check_if_gene_exists, \
+        get_diseases_for_gene, \
+        Diseases_associated_gene, query_gene_disease_association, fetch_disease_nids, get_diseases_associated_with_gene
+except:
+    from scp_disgenet import fetch_gene_name, list_tables_and_columns, check_if_gene_exists, \
+        get_diseases_for_gene, \
+        Diseases_associated_gene, query_gene_disease_association, fetch_disease_nids, get_diseases_associated_with_gene
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -189,4 +196,10 @@ def S3_4_Gene_Rename(dir_paths):
     # Close the browser
     browser.quit()
 
+if __name__ == "__main__":
+    from get_dir_paths import get_dir_paths
 
+    current_dir_path = os.path.dirname(os.getcwd())
+    dir_paths = get_dir_paths(current_dir_path)
+
+    S3_4_Gene_Rename(dir_paths)

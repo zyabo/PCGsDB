@@ -8,9 +8,9 @@ pip install git+https://github.com/Anth-us/openai_cost_calculator.git@main
 """
 
 def count_words(text):
-    # 分割字符串
+    # Splitting a string
     words = text.split()
-    # 返回单词数量
+    # Returns the number of words
     return len(words)
 def S0_4_Statis(dir_paths):
     print("\n*S0_4_Statis")
@@ -60,9 +60,7 @@ def S0_4_Statis(dir_paths):
 if __name__ == "__main__":
     from get_dir_paths import get_dir_paths
 
-    # current_dir_path = os.path.dirname(os.getcwd())
-    current_dir_path = r"D:\Codes\GeneExplorer"
-
+    current_dir_path = os.path.dirname(os.getcwd())
     dir_paths = get_dir_paths(current_dir_path)
 
     S0_4_Statis(dir_paths)

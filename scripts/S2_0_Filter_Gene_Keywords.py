@@ -19,9 +19,12 @@ import ast
 from transformers import AutoTokenizer
 import transformers
 import torch
-from scripts.call_llm import get_response, init_llm
-from scripts.pathfile import parse_path
-
+try:
+    from scripts.call_llm import get_response, init_llm
+    from scripts.pathfile import parse_path
+except:
+    from call_llm import get_response, init_llm
+    from pathfile import parse_path
 torch.cuda.empty_cache()
 # device = "cuda" if torch.cuda.is_available() else "cpu"
 device = "cuda"
@@ -33,7 +36,6 @@ Based on the medical records of patients ({}, {}), answer the following question
 
 **Question A: If genetic testing is mentioned in the medical record, please list complete sentences referring to genetic testing. **
 Answer:
-* xxx
 * xxx
 
 **[Question B: If gene-related biomarkers are mentioned in the medical record, please list complete sentences referring to the gene-related biomarkers. **
@@ -192,6 +194,11 @@ def S2_0_Filter_Gene_Keywords(dir_paths):
 
 
 if __name__ == '__main__':
+    from get_dir_paths import get_dir_paths
+
+    current_dir_path = os.path.dirname(os.getcwd())
+    dir_paths = get_dir_paths(current_dir_path)
+
     """
     1. init llm
     """

@@ -72,7 +72,11 @@ def S1_1_Filter_Index_TissueRecord(dir_paths):
 
     print(num_c)
     print(num_k)
-# if __name__ == "__main__":
-#     current_dir_path = os.path.dirname(os.getcwd())
-#     S1_1_Filter_Index_TissueRecord(current_dir_path)
+if __name__ == "__main__":
+    from get_dir_paths import get_dir_paths
+
+    current_dir_path = os.path.dirname(os.getcwd())
+    dir_paths = get_dir_paths(current_dir_path)
+
+    S1_1_Filter_Index_TissueRecord(dir_paths)
 

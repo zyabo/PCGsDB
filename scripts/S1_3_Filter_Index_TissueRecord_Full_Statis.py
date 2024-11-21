@@ -9,7 +9,7 @@ import os
 
 def S1_3_Filter_Index_TissueRecord_Full_Statis(dir_paths):
 
-    # 1.读取所有病例的病历
+    #1. Read the medical records of all cases
     df = pd.read_csv(dir_paths["PMC-Patients.csv"] )
     list_records = df['patient'].tolist()
 
@@ -76,7 +76,6 @@ def S1_3_Filter_Index_TissueRecord_Full_Statis(dir_paths):
         # plt.xticks(rotation=90, fontsize=14)
         plt.yticks(fontsize=8)
         plt.tight_layout()
-        # 显示图形
         # plt.show()
 
         title_str = "Statistics on the number of sub-cancers in the tissue"
@@ -88,8 +87,9 @@ def S1_3_Filter_Index_TissueRecord_Full_Statis(dir_paths):
         plt.close()
 
 if __name__ == "__main__":
-    current_dir_path = r"D:\Codes\GeneExplorer"
+    from get_dir_paths import get_dir_paths
 
+    current_dir_path = os.path.dirname(os.getcwd())
     dir_paths = get_dir_paths(current_dir_path)
 
     S1_3_Filter_Index_TissueRecord_Full_Statis(dir_paths)

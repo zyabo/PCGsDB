@@ -8,8 +8,12 @@ import pickle
 import os
 import pandas as pd
 import json
-from scripts.call_llm import get_response, init_llm, get_model_dict
-from scripts.pathfile import parse_path
+try:
+    from scripts.call_llm import get_response, init_llm
+    from scripts.pathfile import parse_path
+except:
+    from call_llm import get_response, init_llm
+    from pathfile import parse_path
 import pprint
 from collections import Counter
 import matplotlib.pyplot as plt
@@ -66,10 +70,10 @@ def S4_3_Score_Level(dir_paths):
 
         for g1, gene_name in enumerate(genes_name):
             """
-            3. 非CGC  非DisGeNET
-            2. 是CGC  非DisGeNET
-            1. 非CGC  是DisGeNET（分数低）
-            0. 是DisGeNET（分数高）
+            3. Not CGC, not DisGeNET
+            2. Yes CGC, not DisGeNET
+            1. Not CGC, yes DisGeNET (low score)
+            0. Yes DisGeNET (high score)
             """
             if (not genes_Score_CGC_Exist[g1]) and (not genes_Score_DisGeNET_exist[g1]):
                 genes_level[g1] = 3
@@ -131,3 +135,11 @@ def S4_3_Score_Level(dir_paths):
     print(genes_n_all)
     print(genes_num_n_all)
 
+
+if __name__ == "__main__":
+    from get_dir_paths import get_dir_paths
+
+    current_dir_path = os.path.dirname(os.getcwd())
+    dir_paths = get_dir_paths(current_dir_path)
+
+    S4_3_Score_Level(dir_paths)

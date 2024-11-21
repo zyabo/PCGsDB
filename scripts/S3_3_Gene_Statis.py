@@ -18,8 +18,12 @@ import ast
 from transformers import AutoTokenizer
 import transformers
 import torch
-from scripts.call_llm import get_response, init_llm
-from scripts.pathfile import parse_path
+try:
+    from scripts.call_llm import get_response, init_llm
+    from scripts.pathfile import parse_path
+except:
+    from call_llm import get_response, init_llm
+    from pathfile import parse_path
 import pprint
 from collections import Counter
 import matplotlib.pyplot as plt
@@ -137,5 +141,10 @@ def S3_3_Gene_Statis(dir_paths):
     with open(dir_paths["Dict_Gene_Statis.json"], 'w') as json_file:
         json.dump(Dict_Gene_Statis, json_file, indent=4)
 
+if __name__ == "__main__":
+    from get_dir_paths import get_dir_paths
 
-    uu=1
+    current_dir_path = os.path.dirname(os.getcwd())
+    dir_paths = get_dir_paths(current_dir_path)
+
+    S3_3_Gene_Statis(dir_paths)

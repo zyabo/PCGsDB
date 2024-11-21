@@ -1,6 +1,6 @@
 import pubmed_parser as pp
 
-def pmc_parse_xml(path = r"E:\20TDatas\Datas\Collected\医学数据集\pubmed\PMC_oa_comm\PMC000xxxxxx\PMC556014.xml"):
+def pmc_parse_xml(path = r"E:\20TDatas\Datas\Collected\Medical\pubmed\PMC_oa_comm\PMC000xxxxxx\PMC556014.xml"):
     full_txt = ""
 
     dict_out = pp.parse_pubmed_xml(path) # dict_keys(['full_title', 'abstract', 'journal', 'pmid', 'pmc', 'doi', 'publisher_id', 'author_list', 'affiliation_list', 'publication_year', 'publication_date', 'epublication_date', 'subjects', 'coi_statement'])
@@ -26,6 +26,6 @@ def pmc_parse_xml(path = r"E:\20TDatas\Datas\Collected\医学数据集\pubmed\PM
     return full_txt
 
 if __name__ == '__main__':
-    path = r"E:/20TDatas/Datas/Collected/%E5%8C%BB%E5%AD%A6%E6%95%B0%E6%8D%AE%E9%9B%86/pubmed/PMC_oa_comm/PMC005xxxxxx/PMC5000546.xml"
+    path = r"E:/20TDatas/Datas/Collected/Medical/pubmed/PMC_oa_comm/PMC005xxxxxx/PMC5000546.xml"
     full_txt = pmc_parse_xml(path)
     uu=1

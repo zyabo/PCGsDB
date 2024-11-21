@@ -19,6 +19,9 @@ def S0_3_CancerList_Full(dir_paths):
     with open(dir_paths["Dict_TissueCancerNames_Full.json"] , 'w') as f:
         json.dump(Dict_TissueCancerNames_Full, f, indent=4)
     print(len_n)
-# if __name__ == "__main__":
-#     current_dir_path = os.path.dirname(os.getcwd())
-#     S0_3_CancerList_Full(current_dir_path)
+    
+if __name__ == "__main__":
+    from get_dir_paths import get_dir_paths
+    current_dir_path = os.path.dirname(os.getcwd())
+    dir_paths = get_dir_paths(current_dir_path)
+    S0_3_CancerList_Full(dir_paths)

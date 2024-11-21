@@ -22,7 +22,7 @@ torch.cuda.empty_cache()
 device = "cuda"
 
 client_gpt = OpenAI(
-    api_key="sk-proj-***************************************",
+    api_key="sk-proj-***********************",
 )
 
 
@@ -33,7 +33,17 @@ def get_response(model_type, model_name, client, pipeline, tokenizer, prompt_str
         response_str = get_response_local(prompt_str, pipeline, tokenizer, model_name, template)
 
     if model_type == "api":
-        if model_name == "chain-of-thoughts.q5":
+
+        if model_name == "llama3.1:8b":
+            response = ollama.chat(model='llama3.1:8b', messages=[
+                {
+                    'role': 'user',
+                    'content': prompt_str,
+                },
+            ])
+            response_str = response['message']['content']
+
+        elif model_name == "chain-of-thoughts.q5":
             response = ollama.chat(model='mychen76/llama3.1-intuitive-thinker:chain-of-thoughts.q5', messages=[
                 {'role': 'user', 'content': prompt_str}
             ])
@@ -131,6 +141,10 @@ def get_response_api(prompt_str, model_name):
             {'role': 'user', 'content': prompt_str}
         ])
 
+    if model_name == "llama3":
+        response = ollama.chat(model='llama3', messages=[
+            {'role': 'user', 'content': prompt_str}
+        ])
     if model_name == "llama3":
         response = ollama.chat(model='llama3', messages=[
             {'role': 'user', 'content': prompt_str}

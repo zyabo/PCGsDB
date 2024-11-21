@@ -129,7 +129,8 @@ def S0_0_Check_Settings(dir_paths):
         json.dump(SelectedTissue, json_file)
 
 
-# if __name__ == "__main__":
-#     import os
-#     current_dir_path = os.path.dirname(os.getcwd())
-#     S0_0_Statis_Settings(dir_paths)
+if __name__ == "__main__":
+    from get_dir_paths import get_dir_paths
+    current_dir_path = os.path.dirname(os.getcwd())
+    dir_paths = get_dir_paths(current_dir_path)
+    S0_0_Statis_Settings(dir_paths)

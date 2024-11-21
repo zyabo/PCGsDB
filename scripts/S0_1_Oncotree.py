@@ -51,9 +51,11 @@ def S0_1_Oncotree(dir_paths):
     print("\n*S0_1_Oncotree\n    Oncotree's first-level organization name: \n    "+str(level_1_names))
     uu=1
     return tumor_types_dict, level_1_names
-# if __name__ == "__main__":
-#     current_dir_path = os.path.dirname(os.getcwd())
-#     S0_1_Oncotree(current_dir_path)
+if __name__ == "__main__":
+    from get_dir_paths import get_dir_paths
+    current_dir_path = os.path.dirname(os.getcwd())
+    dir_paths = get_dir_paths(current_dir_path)
+    S0_1_Oncotree(current_dir_path)
 
 
 
